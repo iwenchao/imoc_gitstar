@@ -1,0 +1,3 @@
+rootProject.name = 'imoc_gitstar'
+
+include ':app'
