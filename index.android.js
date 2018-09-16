@@ -5,17 +5,17 @@
  */
 
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Image,Navigator} from 'react-native';
+import {AppRegistry, StyleSheet, View, Image,Navigator,ListView} from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 
 import Boy from './js/page/Boy'
+import ArticleList from './js/page/ArticleList'
 
 export default class imoc_gitstar extends Component {
 
     constructor(props){
         super(props);
         this.state = {
-            selectedTab:'tb_popular',
         }
     }
 
@@ -64,10 +64,10 @@ export default class imoc_gitstar extends Component {
                         onPress={() => this.setState({selectedTab: 'tb_mine'})}>
                         <View style={styles.page2}></View>
                     </TabNavigator.Item>
-                </TabNavigator>*/}
+                </TabNavigator>
                 <Navigator
                     initialRoute={
-                        { component:Boy}
+                        { component:ArticleList}
                     }
                     renderScene={(route,navigator)=>{
                         let Component = route.component;
@@ -75,7 +75,8 @@ export default class imoc_gitstar extends Component {
                     }}
                 >
 
-                </Navigator>
+                </Navigator>*/}
+                <ArticleList/>
             </View>
         );
     }
