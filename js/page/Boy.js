@@ -4,31 +4,31 @@
  * Description:
  */
 
+import * as Constant from "../common/Constant";
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Image, Text} from 'react-native';
-import Girl from './Girl'
+import {StyleSheet, Text, View} from 'react-native';
 import NavigationBar from '../widget/NavigationBar'
+import Girl from './Girl'
 
-export default class Boy extends Component{
+export default class Boy extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
-            word:''
+        this.state = {
+            word: ''
         }
     }
 
 
-    render(){
-        let what = this.state.word===''?'':'我收到了女孩的礼物:'+this.state.word;
+    render() {
+        let what = this.state.word === '' ? '' : '我收到了女孩的礼物:' + this.state.word;
 
-        return(
+        return (
             <View style={styles.container}>
                 <NavigationBar
                     title={'boy'}
                     statusBar={{
-                        backgroundColor: 'red',
-
+                        backgroundColor: Constant.STATUS_BAR_COLOR,
                     }}
                 />
 
@@ -36,14 +36,14 @@ export default class Boy extends Component{
                 <Text style={styles.text}>I am a boy</Text>
                 <Text
                     style={styles.text}
-                    onPress={()=>{
+                    onPress={() => {
                         this.props.navigator.push({
-                            component:Girl,
-                            params:{
-                                word:'一枝玫瑰',
-                                onCallBack:(what)=>{
+                            component: Girl,
+                            params: {
+                                word: '一枝玫瑰',
+                                onCallBack: (what) => {
                                     this.setState({
-                                        word:what
+                                        word: what
                                     })
                                 }
                             }
@@ -58,12 +58,12 @@ export default class Boy extends Component{
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
-        backgroundColor:'gray',
+        backgroundColor: 'gray',
     },
-    text:{
-        fontSize:20,
+    text: {
+        fontSize: 20,
 
     }
 });

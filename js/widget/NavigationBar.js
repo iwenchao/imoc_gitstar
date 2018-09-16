@@ -36,13 +36,13 @@ export default class NavigationBar extends Component {
         hide: PropTypes.bool,
         leftButton: PropTypes.element,
         rightButton: PropTypes.element,
-        backgroundColor:PropTypes.string,
+        backgroundColor: PropTypes.string,
         statusBar: PropTypes.shape(StatusBarShape)
     };
-    static defaultProps={
-        statusBar:{
+    static defaultProps = {
+        statusBar: {
             barStyle: 'light-content',
-            hidden:false,
+            hidden: false,
         }
 
     };
@@ -74,7 +74,7 @@ export default class NavigationBar extends Component {
         </View>;
 
         return (
-            <View style={[styles.container,this.props.style]}>
+            <View style={[styles.container, this.props.style]}>
                 {statusBar}
                 {content}
             </View>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     },
     navBar: {
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         height: Platform.OS === 'ios' ? NAVIGATION_HEIGHT_IOS : NAVIGATION_HEIGHT_ANDROID,
         backgroundColor: 'red',
         flexDirection: 'row'
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
         height: Platform.OS === 'ios' ? STATUS_BAR_HEIGHT : 0,
     }
 
-})
+});
