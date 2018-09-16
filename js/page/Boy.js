@@ -7,6 +7,7 @@
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, View, Image, Text} from 'react-native';
 import Girl from './Girl'
+import NavigationBar from '../widget/NavigationBar'
 
 export default class Boy extends Component{
 
@@ -19,8 +20,19 @@ export default class Boy extends Component{
 
 
     render(){
+        let what = this.state.word===''?'':'我收到了女孩的礼物:'+this.state.word;
+
         return(
             <View style={styles.container}>
+                <NavigationBar
+                    title={'boy'}
+                    statusBar={{
+                        backgroundColor: 'red',
+
+                    }}
+                />
+
+
                 <Text style={styles.text}>I am a boy</Text>
                 <Text
                     style={styles.text}
@@ -29,16 +41,16 @@ export default class Boy extends Component{
                             component:Girl,
                             params:{
                                 word:'一枝玫瑰',
-                                onCallBack:(word)=>{
+                                onCallBack:(what)=>{
                                     this.setState({
-                                        word:word
+                                        word:what
                                     })
                                 }
                             }
                         })
                     }}
                 >我要给你送玫瑰花</Text>
-                <Text style={styles.text}>我收到了:{this.state.word}</Text>
+                <Text style={styles.text}>{what}</Text>
             </View>
         )
     }
@@ -49,10 +61,9 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor:'gray',
-        justifyContent:'center'
     },
     text:{
         fontSize:20,
 
     }
-})
+});
