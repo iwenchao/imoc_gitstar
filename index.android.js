@@ -5,8 +5,10 @@
  */
 
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Image} from 'react-native';
+import {AppRegistry, StyleSheet, View, Image,Navigator} from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
+
+import Boy from './js/page/Boy'
 
 export default class imoc_gitstar extends Component {
 
@@ -21,7 +23,7 @@ export default class imoc_gitstar extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TabNavigator>
+               {/* <TabNavigator>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'tb_popular'}
                         title="最热"
@@ -62,7 +64,18 @@ export default class imoc_gitstar extends Component {
                         onPress={() => this.setState({selectedTab: 'tb_mine'})}>
                         <View style={styles.page2}></View>
                     </TabNavigator.Item>
-                </TabNavigator>
+                </TabNavigator>*/}
+                <Navigator
+                    initialRoute={
+                        { component:Boy}
+                    }
+                    renderScene={(route,navigator)=>{
+                        let Component = route.component;
+                        return <Component navigator={navigator} {...route.params}/>
+                    }}
+                >
+
+                </Navigator>
             </View>
         );
     }
