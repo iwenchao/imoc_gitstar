@@ -131,7 +131,6 @@ class ArticleList extends Component {
             this.setState({
                 isLoading: false,
             });
-
         }, 2000)
     }
 }

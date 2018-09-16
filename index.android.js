@@ -4,6 +4,7 @@
  * @flow
  */
 
+import NetPage from "./js/page/NetPage";
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, View, Image,Navigator,ListView} from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
@@ -76,7 +77,7 @@ export default class imoc_gitstar extends Component {
                 >
 
                 </Navigator>*/}
-                <ArticleList/>
+                <NetPage/>
             </View>
         );
     }
