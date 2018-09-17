@@ -6,7 +6,7 @@
 
 import React, {Component} from 'react';
 import {Navigator} from 'react-native';
-import WelcomePage from "../page/WelcomePage";
+import WelcomePage from "./page/WelcomePage";
 
 
 function setup() {

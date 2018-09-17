@@ -7,7 +7,7 @@
 import React, {Component} from 'react';
 import {AppRegistry} from 'react-native';
 
-import setup from './js/util/setup'
+import setup from './js/setup'
 
 
 AppRegistry.registerComponent('imoc_gitstar', () => setup);
