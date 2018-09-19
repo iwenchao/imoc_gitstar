@@ -4,8 +4,10 @@
  * Description:
  */
 
+import RepositoryCell from "../common/RepositoryCell";
 import React, {Component} from 'react';
-import {StyleSheet, Text, View,TextInput} from 'react-native';
+import {ListView, StyleSheet, Text, View} from 'react-native';
+import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import DataRepository from '../expand/dao/DataRepository'
 import NavigationBar from "../widget/NavigationBar";
 
@@ -17,32 +19,9 @@ export default class PopularPage extends Component {
 
     constructor(props) {
         super(props);
-        this.dataRepository = new DataRepository();
 
-        this.state = {
-            result:''
-        }
     }
 
-    onLoad(text) {
-        let url = this.getUrl(text);
-        this.dataRepository.getNetData(url)
-            .then(result=>{
-                this.setState({
-                    result:JSON.stringify(result)
-                })
-            })
-            .catch(error=>{
-                this.setState({
-                    result:JSON.stringify(error)
-                })
-            })
-    }
-
-
-    getUrl(key){
-        return URL+key+QUERY_STR;
-    }
 
     render() {
         return (
@@ -51,22 +30,70 @@ export default class PopularPage extends Component {
                     title={'最热'}
                     style={{backgroundColor: '#6495ED'}}
                 />
+                <ScrollableTabView renderTabBar={() => <ScrollableTabBar/>}>
+                    <PopularTabPage tabLabel='html' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
+                    <PopularTabPage tabLabel='android' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
+                    <PopularTabPage tabLabel='javaScript' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
+                    <PopularTabPage tabLabel='python' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
 
-                <Text
-                    style={styles.tips}
-                    onPress={() => {
-                        this.onLoad(this.inputText)
-                    }}
-                >获取数据</Text>
+                </ScrollableTabView>
 
-                <TextInput
-                    style={{height: 40,borderWidth: 1,margin: 10}}
-                    onChangeText={(text) => {
-                        this.inputText = text;
-                    }}
+            </View>
+        );
+    }
+}
+
+
+class PopularTabPage extends Component {
+
+
+    constructor(props) {
+        super(props);
+        this.dataRepository = new DataRepository();
+
+        this.state = {
+            result: '',
+            dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+        }
+    }
+
+
+    componentDidMount() {
+        this._onLoad("Java");
+    }
+
+    _onLoad(text) {
+        let url = this._getUrl(text);
+        this.dataRepository.getNetData(url)
+            .then(result => {
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(result.items)
+                })
+            })
+            .catch(error => {
+                this.setState({
+                    result: JSON.stringify(error)
+                })
+            })
+    }
+
+
+    _getUrl(key) {
+        return URL + key + QUERY_STR;
+    }
+
+    _renderRow(item) {
+        return <RepositoryCell data={item}/>
+    }
+
+    render() {
+        return (
+            <View>
+                <ListView
+                    dataSource={this.state.dataSource}
+                    renderRow={(item) => this._renderRow(item)}
                 />
 
-                <Text style={{fontSize: 20,height:1000}}>{this.state.result}</Text>
             </View>
         );
     }
@@ -81,4 +108,4 @@ const styles = StyleSheet.create({
         fontSize: 29
     },
 
-})
+});
