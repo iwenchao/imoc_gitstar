@@ -5,9 +5,10 @@
  */
 
 
-import HomePage from "../page/HomePage";
 import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import * as Constant from "../common/Constant";
+import HomePage from "../page/HomePage";
 import NavigationBar from '../widget/NavigationBar'
 
 /**
@@ -39,6 +40,7 @@ export default class WelcomePage extends Component {
             <View>
                 <NavigationBar
                     title={'欢迎'}
+                    statusBar={{backgroundColor: Constant.STATUS_BAR_COLOR}}
                 />
                 <Text>欢迎</Text>
             </View>

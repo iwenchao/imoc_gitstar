@@ -4,10 +4,11 @@
  * Description:
  */
 
-import RepositoryCell from "../common/RepositoryCell";
 import React, {Component} from 'react';
-import {ListView, StyleSheet, Text, View} from 'react-native';
+import {ListView, StyleSheet, View} from 'react-native';
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
+import * as Constant from "../common/Constant";
+import RepositoryCell from "../common/RepositoryCell";
 import DataRepository from '../expand/dao/DataRepository'
 import NavigationBar from "../widget/NavigationBar";
 
@@ -28,13 +29,18 @@ export default class PopularPage extends Component {
             <View style={styles.container}>
                 <NavigationBar
                     title={'最热'}
-                    style={{backgroundColor: '#6495ED'}}
+                    style={{backgroundColor: Constant.STATUS_BAR_COLOR}}
                 />
-                <ScrollableTabView renderTabBar={() => <ScrollableTabBar/>}>
-                    <PopularTabPage tabLabel='html' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
-                    <PopularTabPage tabLabel='android' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
-                    <PopularTabPage tabLabel='javaScript' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
-                    <PopularTabPage tabLabel='python' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
+                <ScrollableTabView
+                    tabBarBackgroundColor={Constant.STATUS_BAR_COLOR}
+                    tabBarInactiveTextColor="mintcream"
+                    tabBarActiveTextColor="white"
+                    tabBarUnderlineStyle={{backgroundColor: '#e7e7e7', height: 2}}
+                    renderTabBar={() => <ScrollableTabBar/>}>
+                    <PopularTabPage tabLabel='前端' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
+                    <PopularTabPage tabLabel='安卓' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
+                    <PopularTabPage tabLabel='苹果' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
+                    <PopularTabPage tabLabel='后端' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
 
                 </ScrollableTabView>
 

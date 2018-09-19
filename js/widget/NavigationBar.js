@@ -1,3 +1,5 @@
+
+
 /**
  * Author: iwen
  * Create Time: 2018-09-16 19:08
@@ -5,7 +7,7 @@
  */
 import React, {Component, PropTypes} from 'react';
 import {Platform, StatusBar, StyleSheet, Text, View} from 'react-native';
-
+import * as Constant from "../common/Constant";
 
 const NAVIGATION_HEIGHT_ANDROID = 50;
 const NAVIGATION_HEIGHT_IOS = 44;
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: Platform.OS === 'ios' ? NAVIGATION_HEIGHT_IOS : NAVIGATION_HEIGHT_ANDROID,
-        backgroundColor: 'red',
+        backgroundColor: Constant.STATUS_BAR_COLOR,
         flexDirection: 'row'
     },
     titleViewContainer: {
