@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import TabNavigator from "react-native-tab-navigator";
 import PopularPage from "./PopularPage";
-
+import * as Constant from '../common/Constant'
 
 export default class HomePage extends Component {
 
@@ -27,10 +27,10 @@ export default class HomePage extends Component {
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'tb_popular'}
                         title="最热"
-                        selectedTitleStyle={{color: 'red'}}
+                        selectedTitleStyle={{color: Constant.STATUS_BAR_COLOR}}
                         renderIcon={() => <Image style={styles.icon}
                                                  source={require('../../res/images/ic_polular.png')}/>}
-                        renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: 'red'}]}
+                        renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: Constant.STATUS_BAR_COLOR}]}
                                                          source={require('../../res/images/ic_polular.png')}/>}
                         onPress={() => this.setState({selectedTab: 'tb_popular'})}>
 
@@ -39,10 +39,10 @@ export default class HomePage extends Component {
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'tb_trending'}
                         title="趋势"
-                        selectedTitleStyle={{color: 'green'}}
+                        selectedTitleStyle={{color: Constant.STATUS_BAR_COLOR}}
                         renderIcon={() => <Image style={styles.icon}
                                                  source={require('../../res/images/ic_trending.png')}/>}
-                        renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: 'green'}]}
+                        renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: Constant.STATUS_BAR_COLOR}]}
                                                          source={require('../../res/images/ic_trending.png')}/>}
                         onPress={() => this.setState({selectedTab: 'tb_trending'})}>
                         <View style={styles.trending}/>
@@ -50,10 +50,10 @@ export default class HomePage extends Component {
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'tb_favorite'}
                         title="收藏"
-                        selectedTitleStyle={{color: 'yellow'}}
+                        selectedTitleStyle={{color: Constant.STATUS_BAR_COLOR}}
                         renderIcon={() => <Image style={styles.icon}
                                                  source={require('../../res/images/ic_favorite.png')}/>}
-                        renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: 'yellow'}]}
+                        renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: Constant.STATUS_BAR_COLOR}]}
                                                          source={require('../../res/images/ic_favorite.png')}/>}
                         onPress={() => this.setState({selectedTab: 'tb_favorite'})}>
 
@@ -62,10 +62,10 @@ export default class HomePage extends Component {
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'tb_mine'}
                         title="我的"
-                        selectedTitleStyle={{color: 'purple'}}
+                        selectedTitleStyle={{color: Constant.STATUS_BAR_COLOR}}
                         renderIcon={() => <Image style={styles.icon}
                                                  source={require('../../res/images/ic_my.png')}/>}
-                        renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: 'purple'}]}
+                        renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: Constant.STATUS_BAR_COLOR}]}
                                                          source={require('../../res/images/ic_my.png')}/>}
                         onPress={() => this.setState({selectedTab: 'tb_mine'})}>
                         <View style={styles.mine}/>

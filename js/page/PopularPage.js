@@ -5,7 +5,7 @@
  */
 
 import React, {Component} from 'react';
-import {ListView, StyleSheet, View} from 'react-native';
+import {ListView, StyleSheet, View,RefreshControl} from 'react-native';
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import * as Constant from "../common/Constant";
 import RepositoryCell from "../common/RepositoryCell";
@@ -30,6 +30,7 @@ export default class PopularPage extends Component {
                 <NavigationBar
                     title={'最热'}
                     style={{backgroundColor: Constant.STATUS_BAR_COLOR}}
+                    statusBar={{backgroundColor: Constant.STATUS_BAR_COLOR}}
                 />
                 <ScrollableTabView
                     tabBarBackgroundColor={Constant.STATUS_BAR_COLOR}
@@ -59,7 +60,8 @@ class PopularTabPage extends Component {
 
         this.state = {
             result: '',
-            dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+            dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+            refreshing:false,
         }
     }
 
@@ -69,16 +71,21 @@ class PopularTabPage extends Component {
     }
 
     _onLoad(text) {
+        this.setState({
+            refreshing:true
+        });
         let url = this._getUrl(text);
         this.dataRepository.getNetData(url)
             .then(result => {
                 this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(result.items)
+                    dataSource: this.state.dataSource.cloneWithRows(result.items),
+                    refreshing:false
                 })
             })
             .catch(error => {
                 this.setState({
-                    result: JSON.stringify(error)
+                    result: JSON.stringify(error),
+                    refreshing:false
                 })
             })
     }
@@ -98,6 +105,16 @@ class PopularTabPage extends Component {
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={(item) => this._renderRow(item)}
+                    refreshControl={
+                        <RefreshControl
+                            colors={['#2196F3']}
+                            tintColor={'#2196F3'}
+                            title={'加载中'}
+                            titleColor={'#2196F3'}
+                            refreshing={this.state.refreshing}
+                            onRefresh={()=>this._onLoad("Java")}
+                        />
+                    }
                 />
 
             </View>

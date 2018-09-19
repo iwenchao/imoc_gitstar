@@ -24,7 +24,7 @@ export default class RepositoryCell extends Component {
                     <Text style={styles.description}>{this.props.data.description}</Text>
                     <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
                         <View style={{flexDirection: 'row'}}>
-                            <Text>Author:</Text>
+                            <Text style={styles.subdes}>作者:</Text>
                             <Image
                                 style={{height: 22, width: 22,borderRadius:2}}
                                 source={{uri: this.props.data.owner.avatar_url}}
@@ -32,7 +32,7 @@ export default class RepositoryCell extends Component {
                         </View>
 
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Text>Stars:</Text>
+                            <Text style={styles.subdes}>关注度:</Text>
                             <Text>{this.props.data.stargazers_count}</Text>
                         </View>
                         <Image
@@ -56,6 +56,11 @@ const styles = StyleSheet.create({
         marginBottom: 2,
         color: '#333333'
     },
+    subdes:{
+        fontSize:16,
+        marginRight: 4
+    },
+
     description: {
         fontSize: 16,
         color: '#666666'
