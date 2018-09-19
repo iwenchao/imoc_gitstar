@@ -4,11 +4,14 @@
  * Description:
  */
 
+
 import React, {Component} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import TabNavigator from "react-native-tab-navigator";
 import PopularPage from "./PopularPage";
 import * as Constant from '../common/Constant'
+
+import StorageLab from "../test/StorageLab";
 
 export default class HomePage extends Component {
 
@@ -45,7 +48,7 @@ export default class HomePage extends Component {
                         renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: Constant.STATUS_BAR_COLOR}]}
                                                          source={require('../../res/images/ic_trending.png')}/>}
                         onPress={() => this.setState({selectedTab: 'tb_trending'})}>
-                        <View style={styles.trending}/>
+                        <StorageLab />
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'tb_favorite'}
