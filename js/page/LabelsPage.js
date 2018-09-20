@@ -6,7 +6,8 @@
 
 
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View,Image} from 'react-native';
+import CheckBox from 'react-native-check-box';
 
 import * as Constant from '../common/Constant'
 import LanguageDao, {FLAG_LANGUAGE} from '../expand/dao/LanguageDao'
@@ -17,7 +18,7 @@ export default class LabelsPage extends Component {
 
 
     constructor(props) {
-        super(props)
+        super(props);
         this.lanDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
         this.state = {
             labelArrays: []
@@ -27,7 +28,6 @@ export default class LabelsPage extends Component {
     componentDidMount() {
         this.onLoadLabels();
     }
-
 
 
     onLoadLabels() {
@@ -43,39 +43,59 @@ export default class LabelsPage extends Component {
     }
 
 
-
-    renderLabel(){
-        if(!this.state.labelArrays || this.state.labelArrays.length ===0){
+    renderLabel() {
+        if (!this.state.labelArrays || this.state.labelArrays.length === 0) {
             return;
         }
         let len = this.state.labelArrays.length;
         let labelViews = [];
-        for (let i = 0,size = len -2; i < size; i+=2) {
+        for (let i = 0, size = len - 2; i < size; i += 2) {
             labelViews.push(
                 <View key={i}>
                     <View style={styles.item}>
-                        <Text>{this.state.labelArrays[i].name}</Text>
-                        <Text>{this.state.labelArrays[i+1].name}</Text>
+                        {this._renderCheckBox(this.state.labelArrays[i])}
+                        {this._renderCheckBox(this.state.labelArrays[i + 1])}
                     </View>
                     <View style={styles.line}>
-                        <Text>{this.state.labelArrays[i].name}</Text>
-                        <Text>{this.state.labelArrays[i+1].name}</Text>
+                        {this._renderCheckBox(this.state.labelArrays[i])}
+                        {this._renderCheckBox(this.state.labelArrays[i + 1])}
                     </View>
                 </View>
             )
         }
         labelViews.push(
-            <View key={len-1}>
+            <View key={len - 1}>
                 <View style={styles.item}>
-                    {len%2===0?<Text>{this.state.labelArrays[len-2].name}</Text>:null}
-                    <Text>{this.state.labelArrays[len-1].name}</Text>
+                    {len % 2 === 0 ? this._renderCheckBox(this.state.labelArrays[len - 2]) : null}
+                    {this._renderCheckBox(this.state.labelArrays[len - 1])}
                 </View>
             </View>
         );
 
 
-
         return labelViews;
+    }
+
+
+    _renderCheckBox(itemData) {
+        let leftName = itemData.name;
+        return (
+            <CheckBox
+                style={{flex: 1, padding: 10}}
+                onClick={() => this._onItemClick(itemData)}
+                leftText={leftName}
+                checkedImage={<Image
+                    style={{tintColor:Constant.STATUS_BAR_COLOR}}
+                    source={'../../res/images/ic_star.png'}/>}
+                unCheckedImage={<Image
+                    source={'../../res/images/ic_unstar_navbar.png'}/>}
+            />
+        );
+    }
+
+
+    _onItemClick(itemData) {
+
     }
 
     _onBack() {
@@ -85,6 +105,7 @@ export default class LabelsPage extends Component {
     _onSave() {
 
     }
+
 
     render() {
         let rightButton = <TouchableOpacity
@@ -107,7 +128,7 @@ export default class LabelsPage extends Component {
 
                 />
 
-                <ScrollView>
+                <ScrollView >
                     {this.renderLabel()}
 
                 </ScrollView>
@@ -116,8 +137,6 @@ export default class LabelsPage extends Component {
             </View>
         );
     }
-
-
 }
 
 const styles = StyleSheet.create({
@@ -129,11 +148,11 @@ const styles = StyleSheet.create({
         color: 'white',
         margin: 10
     },
-    line:{
-        height: 1,
-        backgroundColor:'black'
+    line: {
+        height: 0.3,
+        backgroundColor: 'darkgray'
     },
-    item:{
+    item: {
         flexDirection: 'row',
         justifyContent: 'center'
     }
