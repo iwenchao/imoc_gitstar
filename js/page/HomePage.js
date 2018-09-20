@@ -72,7 +72,7 @@ export default class HomePage extends Component {
                         renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: Constant.STATUS_BAR_COLOR}]}
                                                          source={require('../../res/images/ic_my.png')}/>}
                         onPress={() => this.setState({selectedTab: 'tb_mine'})}>
-                        <MinePage />
+                        <MinePage {...this.props}/>
                     </TabNavigator.Item>
                 </TabNavigator>
 

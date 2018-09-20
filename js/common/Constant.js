@@ -13,3 +13,9 @@ export const NAVI_TAB_POPULAR = "最热";
 export const NAVI_TAB_TRENDING = "趋势";
 export const NAVI_TAB_FAVORITE = "收藏";
 export const NAVI_TAB_MINE = "我的";
+export const STATUS_TITLE_LABELS = "自定义标签";
+
+//页面边距
+export const PAGE_PADDING_10 = 10;
+
+

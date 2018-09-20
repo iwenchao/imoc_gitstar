@@ -4,6 +4,7 @@
  * Description:
  */
 
+import LabelsPage from "./LabelsPage";
 import React, {Component} from 'react';
 import {StyleSheet, View,Text} from 'react-native';
 
@@ -35,7 +36,10 @@ export default class MinePage extends Component {
 
 
     _gotoLabelSetting() {
-
+        this.props.navigator.push({
+            component:LabelsPage,
+            params:{...this.props}
+        })
     }
 }
 
