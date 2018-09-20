@@ -9,6 +9,7 @@ import React, {Component} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import TabNavigator from "react-native-tab-navigator";
 import PopularPage from "./PopularPage";
+import MinePage from "./MinePage";
 import * as Constant from '../common/Constant'
 
 import StorageLab from "../test/StorageLab";
@@ -71,7 +72,7 @@ export default class HomePage extends Component {
                         renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: Constant.STATUS_BAR_COLOR}]}
                                                          source={require('../../res/images/ic_my.png')}/>}
                         onPress={() => this.setState({selectedTab: 'tb_mine'})}>
-                        <View style={styles.mine}/>
+                        <MinePage />
                     </TabNavigator.Item>
                 </TabNavigator>
 
