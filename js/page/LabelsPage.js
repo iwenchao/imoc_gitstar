@@ -27,12 +27,18 @@ export default class LabelsPage extends Component {
         this.state = {
             labelArrays: []
         }
+
     }
+
+
 
     componentDidMount() {
         this.onLoadLabels();
     }
 
+    componentDidUpdate() {
+
+    }
 
     onLoadLabels() {
         this.lanDao.fetch()
@@ -151,7 +157,10 @@ export default class LabelsPage extends Component {
     }
 
     /**
-     * 这里有个问题:
+     * 这里有个问题: 会引起报Warning, render() should be a pure function of
+     * props and state . It should never access something  that requires stale data from
+     * the previous render such as refs .. move this logic to componentDidMount and
+     * componentDidUpdate
      * @private
      */
     _onSave() {
