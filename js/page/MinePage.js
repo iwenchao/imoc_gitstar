@@ -4,12 +4,12 @@
  * Description:
  */
 
-import LabelsPage from "./LabelsPage";
 import React, {Component} from 'react';
-import {StyleSheet, View,Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
 import * as Constant from '../common/Constant'
 import NavigationBar from '../widget/NavigationBar'
+import LabelsPage from "./LabelsPage";
 
 
 export default class MinePage extends Component {
@@ -19,6 +19,18 @@ export default class MinePage extends Component {
         super(props)
     }
 
+    componentDidMount() {
+        this.timer = setTimeout(() => {
+            this.props.navigator.push({
+                component: LabelsPage,
+                params: {...this.props}
+            })
+        }, 1000)
+    }
+
+    componentWillUnmount() {
+        this.timer && clearTimeout(this.timer);
+    }
 
     render() {
         return (
@@ -37,8 +49,8 @@ export default class MinePage extends Component {
 
     _gotoLabelSetting() {
         this.props.navigator.push({
-            component:LabelsPage,
-            params:{...this.props}
+            component: LabelsPage,
+            params: {...this.props}
         })
     }
 }
