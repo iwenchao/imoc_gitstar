@@ -54,7 +54,11 @@ export default class PopularPage extends Component {
                 tabBarInactiveTextColor="mintcream"
                 tabBarActiveTextColor="white"
                 tabBarUnderlineStyle={{backgroundColor: '#e7e7e7', height: 2}}
-                renderTabBar={() => <ScrollableTabBar/>}>
+                renderTabBar={() => <ScrollableTabBar tabStyle={{alignItems: 'center',
+                    justifyContent: 'center',paddingLeft: 2,paddingRight: 2}}/>}
+                tabBarPosition="top"
+            >
+
 
 
                 {this.state.tabArrays.map((result, i, arr) => {

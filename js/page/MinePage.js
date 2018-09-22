@@ -32,6 +32,7 @@ export default class MinePage extends Component {
         this.timer && clearTimeout(this.timer);
     }
 
+
     render() {
         return (
             <View style={styles.container}>

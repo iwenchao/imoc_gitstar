@@ -12,7 +12,7 @@
   {
     "path": "MySQL",
     "name": "MySQL",
-    "checked": false
+    "checked": true
   },
   {
     "path": " AngularJS",
