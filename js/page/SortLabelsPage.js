@@ -5,7 +5,7 @@
  */
 
 import React, {Component} from "react";
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import SortableListView from 'react-native-sortable-listview';
 import * as Constant from "../common/Constant";
 import LanguageDao, {FLAG_LANGUAGE} from '../expand/dao/LanguageDao'
@@ -59,7 +59,7 @@ export default class SortLabelsPage extends Component {
                     data={this.state.checkedArray}
                     order={Object.keys(this.state.checkedArray)}
                     onRowMoved={e => {
-                        order.splice(e.to, 0, this.state.checkedArray.splice(e.from, 1)[0]);
+                        this.state.checkedArray.splice(e.to, 0, this.state.checkedArray.splice(e.from, 1)[0]);
                         this.forceUpdate()
                     }}
                     renderRow={row => <SortLabelCell data={row}/>}
@@ -119,22 +119,24 @@ export default class SortLabelsPage extends Component {
 
 class SortLabelCell extends Component {
 
-    // 构造
-    constructor(props) {
-        super(props);
-        // 初始状态
-        this.state = {};
-    }
 
     render() {
         return (
-            <View style={styles.item_container}>
-                <Image
-                    style={{height: 18, width: 18}}
-                    source={require('../../res/images/')}
-                />
-                <Text>{this.props.data.name}</Text>
-            </View>
+            <TouchableHighlight
+                underlayColor={'#eee'}
+                style={styles.item_container}
+                {...this.props.sortHandlers}
+            >
+
+
+                <View style={styles.row}>
+                    <Image
+                        style={styles.item_img}
+                        source={require('../../res/images/ic_sort_list.png')}
+                    />
+                    <Text style={{margin: 8}}>{this.props.data.name}</Text>
+                </View>
+            </TouchableHighlight>
         );
     }
 
@@ -145,7 +147,22 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     item_container: {
-        flex: 1,
+        backgroundColor: '#F8F8F8',
+        borderBottomWidth: 1,
+        borderColor: '#eee',
+        padding: 10
+
+    },
+    row:{
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    item_img: {
+        height: 16,
+        width: 16,
+        margin: 8,
+        tintColor: Constant.STATUS_BAR_COLOR
     }
 
 })
