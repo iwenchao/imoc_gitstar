@@ -26,9 +26,9 @@ export default class LanguageDao {
                     if (result) {
                         try {
                             let jsonResult = JSON.parse(result);
-                            if(jsonResult && jsonResult.length!==0){
+                            if (jsonResult && jsonResult.length !== 0) {
                                 resolve(jsonResult);
-                            }else {
+                            } else {
                                 let data = this.flag === FLAG_LANGUAGE.flag_key ? keys : null;
                                 this.save(data);
                                 resolve(data);
@@ -53,4 +53,5 @@ export default class LanguageDao {
             console.log(error);
         })
     }
+
 }

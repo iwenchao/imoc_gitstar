@@ -70,24 +70,24 @@ export default class SortLabelsPage extends Component {
     }
 
     _onBack() {
+        if (!ArrayUtils.isEqual(this.state.checkedArray, this.originalCheckedArray)) {
+            //保存排序后的数据
+            this._saveSortedResult();
+        }
         this.props.navigator.pop();
 
-        // Alert.alert('提示', '要保存修改吗?', [
-        //     {
-        //         text: '不保存',
-        //         onPress: () => {
-        //             this.props.navigator.pop();
-        //         },
-        //         style: 'cancel'
-        //     }, {
-        //         text: '保存',
-        //         onPress: () => {
-        //             this._onSave();
-        //         }
-        //     }
-        // ])
-
     }
+
+    _saveSortedResult() {
+        this.sortedResultArray = ArrayUtils.clone(this.dataArrays);
+        for (let i = 0; i < this.originalCheckedArray.length; i++) {
+            let item = this.originalCheckedArray[i];
+            let itemIndex = this.originalCheckedArray.indexOf(item);
+            this.sortedResultArray.splice(itemIndex, 1, this.state.checkedArray);
+        }
+        this.languageDao.save(this.sortedResultArray)
+    }
+
 
     _loadLabels() {
         this.languageDao.fetch()
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         padding: 10
 
     },
-    row:{
+    row: {
         flexDirection: 'row',
         alignItems: 'center',
     },
