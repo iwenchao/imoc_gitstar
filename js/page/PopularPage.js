@@ -4,27 +4,66 @@
  * Description:
  */
 
-import React, {Component} from 'react';
-import {ListView, StyleSheet, View,RefreshControl} from 'react-native';
+import React, {Component, PropTypes} from 'react';
+import {ListView, RefreshControl, StyleSheet, View} from 'react-native';
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import * as Constant from "../common/Constant";
 import RepositoryCell from "../common/RepositoryCell";
 import DataRepository from '../expand/dao/DataRepository'
+import LanguageDao, {FLAG_LANGUAGE} from '../expand/dao/LanguageDao'
 import NavigationBar from "../widget/NavigationBar";
+
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
+
 
 export default class PopularPage extends Component {
 
 
     constructor(props) {
         super(props);
+        this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
+        this.state = {
+            tabArrays: [],
+        }
 
     }
 
+    componentDidMount() {
+        this._onLoadLabels();
+    }
+
+    _onLoadLabels() {
+        this.languageDao.fetch()
+            .then(result => {
+                this.setState({
+                    tabArrays: result
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
 
     render() {
+        let content;
+        if (this.state.tabArrays) {
+            content = this.state.tabArrays.length === 0 ? null : <ScrollableTabView
+                tabBarBackgroundColor={Constant.STATUS_BAR_COLOR}
+                tabBarInactiveTextColor="mintcream"
+                tabBarActiveTextColor="white"
+                tabBarUnderlineStyle={{backgroundColor: '#e7e7e7', height: 2}}
+                renderTabBar={() => <ScrollableTabBar/>}>
+
+
+                {this.state.tabArrays.map((result, i, arr) => {
+                    let lan = arr[i];
+                    return lan.checked ? <PopularTabPage key={i} tabLabel={lan.name} searchKey={lan.name}/> : null
+                })}
+            </ScrollableTabView>;
+        }
+
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -32,27 +71,20 @@ export default class PopularPage extends Component {
                     style={{backgroundColor: Constant.STATUS_BAR_COLOR}}
                     statusBar={{backgroundColor: Constant.STATUS_BAR_COLOR}}
                 />
-                <ScrollableTabView
-                    tabBarBackgroundColor={Constant.STATUS_BAR_COLOR}
-                    tabBarInactiveTextColor="mintcream"
-                    tabBarActiveTextColor="white"
-                    tabBarUnderlineStyle={{backgroundColor: '#e7e7e7', height: 2}}
-                    renderTabBar={() => <ScrollableTabBar/>}>
-                    <PopularTabPage tabLabel='前端' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
-                    <PopularTabPage tabLabel='安卓' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
-                    <PopularTabPage tabLabel='苹果' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
-                    <PopularTabPage tabLabel='后端' style={{flex: 1, backgroundColor: '#dad3e3'}}/>
-
-                </ScrollableTabView>
+                {content}
 
             </View>
-        );
+        )
+            ;
     }
 }
 
 
 class PopularTabPage extends Component {
 
+    static propTypes={
+        searchKey : PropTypes.string,
+    };
 
     constructor(props) {
         super(props);
@@ -61,31 +93,31 @@ class PopularTabPage extends Component {
         this.state = {
             result: '',
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-            refreshing:false,
+            refreshing: false,
         }
     }
 
 
     componentDidMount() {
-        this._onLoad("Java");
+        this._onLoad(this.props.searchKey);
     }
 
     _onLoad(text) {
         this.setState({
-            refreshing:true
+            refreshing: true
         });
         let url = this._getUrl(text);
         this.dataRepository.getNetData(url)
             .then(result => {
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(result.items),
-                    refreshing:false
+                    refreshing: false
                 })
             })
             .catch(error => {
                 this.setState({
                     result: JSON.stringify(error),
-                    refreshing:false
+                    refreshing: false
                 })
             })
     }
@@ -112,7 +144,7 @@ class PopularTabPage extends Component {
                             title={'加载中'}
                             titleColor={'#2196F3'}
                             refreshing={this.state.refreshing}
-                            onRefresh={()=>this._onLoad("Java")}
+                            onRefresh={() => this._onLoad("Java")}
                         />
                     }
                 />

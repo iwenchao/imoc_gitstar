@@ -6,7 +6,7 @@
 
 
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View,Image} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CheckBox from 'react-native-check-box';
 
 import * as Constant from '../common/Constant'
@@ -19,7 +19,11 @@ export default class LabelsPage extends Component {
 
     constructor(props) {
         super(props);
+        this._onBack.bind(this);
+        this._onSave.bind(this);
         this.lanDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
+        this.changedValues = [];
+        this.allLabels = [];
         this.state = {
             labelArrays: []
         }
@@ -33,6 +37,7 @@ export default class LabelsPage extends Component {
     onLoadLabels() {
         this.lanDao.fetch()
             .then(result => {
+                this.allLabels = result;
                 this.setState({
                     labelArrays: result
                 })
@@ -57,18 +62,19 @@ export default class LabelsPage extends Component {
                         {this._renderCheckBox(this.state.labelArrays[i + 1])}
                     </View>
                     <View style={styles.line}>
-                        {this._renderCheckBox(this.state.labelArrays[i])}
-                        {this._renderCheckBox(this.state.labelArrays[i + 1])}
                     </View>
                 </View>
             )
         }
         labelViews.push(
             <View key={len - 1}>
+                <View style={styles.line}>
+                </View>
                 <View style={styles.item}>
                     {len % 2 === 0 ? this._renderCheckBox(this.state.labelArrays[len - 2]) : null}
                     {this._renderCheckBox(this.state.labelArrays[len - 1])}
                 </View>
+
             </View>
         );
 
@@ -81,14 +87,16 @@ export default class LabelsPage extends Component {
         let leftName = itemData.name;
         return (
             <CheckBox
+                isChecked={itemData.checked}
                 style={{flex: 1, padding: 10}}
                 onClick={() => this._onItemClick(itemData)}
                 leftText={leftName}
                 checkedImage={<Image
-                    style={{tintColor:Constant.STATUS_BAR_COLOR}}
-                    source={'../../res/images/ic_star.png'}/>}
+                    style={styles.checkbox}
+                    source={require('../../res/images/ic_check_box.png')}/>}
                 unCheckedImage={<Image
-                    source={'../../res/images/ic_unstar_navbar.png'}/>}
+                    style={styles.checkbox}
+                    source={require('../../res/images/ic_check_box_outline_blank.png')}/>}
             />
         );
     }
@@ -96,14 +104,43 @@ export default class LabelsPage extends Component {
 
     _onItemClick(itemData) {
 
+        if (this.allLabels) {
+            for (let i = 0, len = this.allLabels.length; i < len; i++) {
+                let tmp = this.allLabels[i];
+                if (tmp === itemData) {
+                    tmp.checked = !itemData.checked;
+                    break;
+                }
+            }
+        }
+        //这里需要将操作后的数据重新setState
+        this.setState({
+            labelArrays: this.allLabels
+        });
+        //这里需要记录本次修改的结果
+        for (let i = 0, len = this.changedValues.length; i < len; i++) {
+            let tmp = this.changedValues[i];
+            if (tmp === itemData) {
+                this.changedValues.splice(i, 1);
+                return;
+            }
+        }
+        this.changedValues.push(itemData);
     }
 
     _onBack() {
         this.props.navigator.pop();
     }
 
+    /**
+     * 这里有个问题:
+     * @private
+     */
     _onSave() {
+        this.lanDao.save(this.props.allLabels);
 
+        if (this.changedValues && this.changedValues.length !== 0) {
+        }
     }
 
 
@@ -128,7 +165,7 @@ export default class LabelsPage extends Component {
 
                 />
 
-                <ScrollView >
+                <ScrollView>
                     {this.renderLabel()}
 
                 </ScrollView>
@@ -155,5 +192,11 @@ const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
         justifyContent: 'center'
+    },
+    checkbox: {
+        width: 20,
+        height: 20,
+        marginRight: 10,
+        tintColor: Constant.STATUS_BAR_COLOR
     }
 });

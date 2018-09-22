@@ -25,7 +25,15 @@ export default class LanguageDao {
                 } else {
                     if (result) {
                         try {
-                            resolve(JSON.parse(result));
+                            let jsonResult = JSON.parse(result);
+                            if(jsonResult && jsonResult.length!==0){
+                                resolve(jsonResult);
+                            }else {
+                                let data = this.flag === FLAG_LANGUAGE.flag_key ? keys : null;
+                                this.save(data);
+                                resolve(data);
+                            }
+
                         } catch (e) {
                             reject(e);
                         }
@@ -42,7 +50,7 @@ export default class LanguageDao {
 
     save(data) {
         AsyncStorage.setItem(this.flag, JSON.stringify(data), (error) => {
-
+            console.log(error);
         })
     }
 }
