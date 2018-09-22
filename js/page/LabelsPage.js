@@ -6,7 +6,7 @@
 
 
 import React, {Component} from 'react';
-import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View,Alert} from 'react-native';
 import CheckBox from 'react-native-check-box';
 
 import * as Constant from '../common/Constant'
@@ -129,7 +129,25 @@ export default class LabelsPage extends Component {
     }
 
     _onBack() {
-        this.props.navigator.pop();
+        if(this.changedValues.length===0){
+            this.props.navigator.pop();
+            return;
+        }
+        Alert.alert('提示','要保存修改吗?',[
+            {
+                text:'不保存',
+                onPress:()=>{
+                    this.props.navigator.pop();
+                },
+                style:'cancel'
+            },{
+                text:'保存',
+                onPress:()=>{
+                    this._onSave();
+                }
+            }
+        ])
+
     }
 
     /**
@@ -138,16 +156,15 @@ export default class LabelsPage extends Component {
      */
     _onSave() {
         this.lanDao.save(this.props.allLabels);
+        this.props.navigator.pop();
 
-        if (this.changedValues && this.changedValues.length !== 0) {
-        }
     }
 
 
     render() {
         let rightButton = <TouchableOpacity
             style={{padding: 8}}
-            onPress={this._onSave()}
+            onPress={()=>this._onSave()}
         >
             <Text style={styles.icon_save}>保存</Text>
         </TouchableOpacity>;
