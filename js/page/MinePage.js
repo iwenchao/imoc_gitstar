@@ -8,9 +8,9 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import * as Constant from "../common/Constant";
 import NavigationBar from '../widget/NavigationBar'
-import LabelsPage from "./LabelsPage";
 
-import SortLabelsPage from "./SortLabelsPage";
+import EditLabelsPage from "./EditLabelsPage";
+import LabelsPage from "./LabelsPage";
 
 
 export default class MinePage extends Component {
@@ -40,6 +40,7 @@ export default class MinePage extends Component {
 
                 <Text style={styles.item} onPress={() => this._gotoLabelSetting()}>标签设置</Text>
                 <Text style={styles.item} onPress={() => this._gotoSortLabelSetting()}>标签排序设置</Text>
+                <Text style={styles.item} onPress={() => this._gotoDelLabelSetting()}>标签移除</Text>
             </View>
         );
     }
@@ -54,8 +55,15 @@ export default class MinePage extends Component {
 
     _gotoSortLabelSetting() {
         this.props.navigator.push({
-            component: SortLabelsPage,
+            component: EditLabelsPage,
             params: {...this.props}
+        })
+    }
+
+    _gotoDelLabelSetting() {
+        this.props.navigator.push({
+            component: LabelsPage,
+            params: {...this.props, isRemoveable: true}
         })
     }
 }

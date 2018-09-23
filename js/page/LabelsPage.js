@@ -11,6 +11,7 @@ import CheckBox from 'react-native-check-box';
 
 import * as Constant from '../common/Constant'
 import LanguageDao, {FLAG_LANGUAGE} from '../expand/dao/LanguageDao'
+import ArrayUtils from "../util/ArrayUtils";
 import ViewUtils from "../util/ViewUtils";
 import NavigationBar from '../widget/NavigationBar'
 
@@ -22,6 +23,7 @@ export default class LabelsPage extends Component {
         this._onBack.bind(this);
         this._onSave.bind(this);
         this.lanDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
+        this.isRemoveable = this.props.isRemoveable ? true : false;
         this.changedValues = [];
         this.allLabels = [];
         this.state = {
@@ -29,7 +31,6 @@ export default class LabelsPage extends Component {
         }
 
     }
-
 
 
     componentDidMount() {
@@ -164,24 +165,40 @@ export default class LabelsPage extends Component {
      * @private
      */
     _onSave() {
-        this.lanDao.save(this.props.allLabels);
+        this.lanDao.save(this.state.labelArrays);
         this.props.navigator.pop();
 
     }
 
+    _onDel() {
+        for (let i = 0; i < this.changedValues.length; i++) {
+            ArrayUtils.remove(this.state.labelArrays, this.changedValues[i]);
+        }
+        this.lanDao.save(this.state.labelArrays);
+        this.props.navigator.pop();
+    }
+
 
     render() {
+        let title = this.isRemoveable ? "标签移除" : Constant.STATUS_TITLE_LABELS;
+        let rightTitle = this.isRemoveable ? "移除" : "保存";
         let rightButton = <TouchableOpacity
             style={{padding: 8}}
-            onPress={() => this._onSave()}
+            onPress={() => {
+                if (this.isRemoveable) {
+                    this._onDel();
+                } else {
+                    this._onSave();
+                }
+            }}
         >
-            <Text style={styles.icon_save}>保存</Text>
+            <Text style={styles.icon_save}>{rightTitle}</Text>
         </TouchableOpacity>;
 
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    title={Constant.STATUS_TITLE_LABELS}
+                    title={title}
                     style={{backgroundColor: Constant.STATUS_BAR_COLOR}}
                     statusBar={{backgroundColor: Constant.STATUS_BAR_COLOR}}
                     leftButton={ViewUtils.getLeftButton(() => {

@@ -13,7 +13,7 @@ import ArrayUtils from '../util/ArrayUtils'
 import ViewUtils from "../util/ViewUtils";
 import NavigationBar from "../widget/NavigationBar";
 
-export default class SortLabelsPage extends Component {
+export default class EditLabelsPage extends Component {
 
 
     // 构造
@@ -23,6 +23,7 @@ export default class SortLabelsPage extends Component {
         this.dataArrays = [];
         this.sortedResultArray = [];
         this.originalCheckedArray = [];
+
 
         //
         this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
@@ -36,11 +37,13 @@ export default class SortLabelsPage extends Component {
 
     componentDidMount() {
         this._loadLabels();
-
     }
 
 
     render() {
+
+
+
         return (
             <View style={styles.container}>
 
@@ -70,6 +73,9 @@ export default class SortLabelsPage extends Component {
     }
 
     _onBack() {
+        if (this.isRemoveable){
+
+        }
         if (!ArrayUtils.isEqual(this.state.checkedArray, this.originalCheckedArray)) {
             //保存排序后的数据
             this._saveSortedResult();
