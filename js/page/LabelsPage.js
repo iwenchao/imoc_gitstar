@@ -150,7 +150,7 @@ export default class LabelsPage extends Component {
             }, {
                 text: '保存',
                 onPress: () => {
-                    this._onSave();
+                    this._onLeftClick();
                 }
             }
         ])
@@ -178,19 +178,20 @@ export default class LabelsPage extends Component {
         this.props.navigator.pop();
     }
 
+    _onLeftClick() {
+        if (this.isRemoveable) {
+            this._onDel();
+        } else {
+            this._onSave();
+        }
+    }
 
     render() {
         let title = this.isRemoveable ? "标签移除" : Constant.STATUS_TITLE_LABELS;
         let rightTitle = this.isRemoveable ? "移除" : "保存";
         let rightButton = <TouchableOpacity
             style={{padding: 8}}
-            onPress={() => {
-                if (this.isRemoveable) {
-                    this._onDel();
-                } else {
-                    this._onSave();
-                }
-            }}
+            onPress={() => this._onLeftClick()}
         >
             <Text style={styles.icon_save}>{rightTitle}</Text>
         </TouchableOpacity>;
