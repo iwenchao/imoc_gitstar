@@ -49,24 +49,24 @@ export default class PopularPage extends Component {
     render() {
         let content;
         if (this.state.tabArrays) {
-            content = this.state.tabArrays.length === 0 ? null : <ScrollableTabView
-                tabBarBackgroundColor={Constant.STATUS_BAR_COLOR}
-                tabBarInactiveTextColor="mintcream"
-                tabBarActiveTextColor="white"
-                tabBarUnderlineStyle={{backgroundColor: '#e7e7e7', height: 2}}
-                renderTabBar={() => <ScrollableTabBar tabStyle={{
-                    alignItems: 'center',
-                    justifyContent: 'center', paddingLeft: 2, paddingRight: 2
-                }}/>}
-                tabBarPosition="top"
-            >
+            content = this.state.tabArrays.length === 0 ? null :
+                <ScrollableTabView
+                    tabBarBackgroundColor={Constant.STATUS_BAR_COLOR}
+                    tabBarInactiveTextColor="mintcream"
+                    tabBarActiveTextColor="white"
+                    tabBarUnderlineStyle={{backgroundColor: '#e7e7e7', height: 2}}
+                    renderTabBar={() => <ScrollableTabBar tabStyle={{
+                        paddingLeft: 2, paddingRight: 2
+                    }}/>}
+                    tabBarPosition="top"
+                >
 
 
-                {this.state.tabArrays.map((result, i, arr) => {
-                    let lan = arr[i];
-                    return lan.checked ? <PopularTabPage key={i} tabLabel={lan.name} searchKey={lan.name}/> : null
-                })}
-            </ScrollableTabView>;
+                    {this.state.tabArrays.map((result, i, arr) => {
+                        let lan = arr[i];
+                        return lan.checked ? <PopularTabPage key={i} tabLabel={lan.name} searchKey={lan.name}/> : null
+                    })}
+                </ScrollableTabView>;
         }
 
         return (
@@ -112,12 +112,26 @@ class PopularTabPage extends Component {
             refreshing: true
         });
         let url = this._getUrl(text);
-        this.dataRepository.getNetData(url)
+        this.dataRepository
+            .fetchRepositoryByKey(url)
             .then(result => {
+                let items = result && result.items ? result.items : result ? result : [];
+
                 this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(result.items),
+                    dataSource: this.state.dataSource.cloneWithRows(items),
                     refreshing: false
-                })
+                });
+                if (result && result.update_date && !this.dataRepository.checkDate(result.update_date)) {
+                    return this.dataRepository.getNetData(url);
+                }
+            })
+            .then(items => {
+                if (!items || items.length === 0) {
+                    return;
+                }
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(items),
+                });
             })
             .catch(error => {
                 this.setState({
@@ -140,6 +154,7 @@ class PopularTabPage extends Component {
         return (
             <View>
                 <ListView
+                    ref = {(listView) =>{this.listView = listView}}
                     dataSource={this.state.dataSource}
                     renderRow={(item) => this._renderRow(item)}
                     refreshControl={
