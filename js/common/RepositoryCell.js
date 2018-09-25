@@ -5,7 +5,7 @@
  */
 
 import React, {Component} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View,TouchableOpacity} from 'react-native';
 
 
 export default class RepositoryCell extends Component {
@@ -16,35 +16,38 @@ export default class RepositoryCell extends Component {
 
     render() {
         let avatar = this.props.data.owner.avatar_url
-            ?  {uri: this.props.data.owner.avatar_url}
+            ? {uri: this.props.data.owner.avatar_url}
             : require('../../res/images/ic_code.png');
 
         return (
+            <TouchableOpacity
+                onPress={this.props.onRepoClick}
+            >
+                <View style={[styles.cell_container, {margin: 10}]}>
+                    <Text style={styles.title}>{this.props.data.full_name}</Text>
+                    <Text style={styles.description}>{this.props.data.description}</Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={styles.subdes}>作者:</Text>
+                            <Image
 
-            <View style={[styles.cell_container, {margin: 10}]}>
-                <Text style={styles.title}>{this.props.data.full_name}</Text>
-                <Text style={styles.description}>{this.props.data.description}</Text>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.subdes}>作者:</Text>
+                                style={{height: 22, width: 22, borderRadius: 2}}
+                                source={avatar}
+                            />
+                        </View>
+
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={styles.subdes}>关注度:</Text>
+                            <Text>{this.props.data.stargazers_count}</Text>
+                        </View>
                         <Image
-
-                            style={{height: 22, width: 22, borderRadius: 2}}
-                            source={avatar}
+                            style={{width: 22, height: 22, borderRadius: 2}}
+                            source={require('../../res/images/ic_star.png')}
                         />
                     </View>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={styles.subdes}>关注度:</Text>
-                        <Text>{this.props.data.stargazers_count}</Text>
-                    </View>
-                    <Image
-                        style={{width: 22, height: 22, borderRadius: 2}}
-                        source={require('../../res/images/ic_star.png')}
-                    />
                 </View>
-
-            </View>
+            </TouchableOpacity>
         );
     }
 }

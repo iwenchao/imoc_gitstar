@@ -6,13 +6,14 @@
 
 
 import React, {Component} from 'react';
-import {Image, StyleSheet, View,DeviceEventEmitter} from 'react-native';
+import {DeviceEventEmitter, Image, StyleSheet, View} from 'react-native';
+import Toast, {DURATION} from 'react-native-easy-toast'
 import TabNavigator from "react-native-tab-navigator";
-import PopularPage from "./PopularPage";
-import MinePage from "./MinePage";
 import * as Constant from '../common/Constant'
-import Toast ,{DURATION} from 'react-native-easy-toast'
 import StorageLab from "../test/StorageLab";
+import WebViewLab from "../test/WebViewLab";
+import MinePage from "./MinePage";
+import PopularPage from "./PopularPage";
 
 export default class HomePage extends Component {
 
@@ -30,10 +31,10 @@ export default class HomePage extends Component {
     }
 
 
-    _registerListener(){
-        this.toastListener = DeviceEventEmitter.addListener(Constant.EVENT_TOAST,(text)=>{
-            this.toast.show(text,DURATION.LENGTH_SHORT);
-        } );
+    _registerListener() {
+        this.toastListener = DeviceEventEmitter.addListener(Constant.EVENT_TOAST, (text) => {
+            this.toast.show(text, DURATION.LENGTH_SHORT);
+        });
     }
 
     render() {
@@ -50,7 +51,7 @@ export default class HomePage extends Component {
                                                          source={require('../../res/images/ic_polular.png')}/>}
                         onPress={() => this.setState({selectedTab: 'tb_popular'})}>
 
-                        <PopularPage />
+                        <PopularPage {...this.props}/>
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'tb_trending'}
@@ -61,7 +62,7 @@ export default class HomePage extends Component {
                         renderSelectedIcon={() => <Image style={[styles.icon, {tintColor: Constant.STATUS_BAR_COLOR}]}
                                                          source={require('../../res/images/ic_trending.png')}/>}
                         onPress={() => this.setState({selectedTab: 'tb_trending'})}>
-                        <StorageLab />
+                        <StorageLab/>
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'tb_favorite'}
@@ -73,7 +74,7 @@ export default class HomePage extends Component {
                                                          source={require('../../res/images/ic_favorite.png')}/>}
                         onPress={() => this.setState({selectedTab: 'tb_favorite'})}>
 
-                        <View style={styles.favorite}/>
+                        <WebViewLab/>
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'tb_mine'}
@@ -88,7 +89,7 @@ export default class HomePage extends Component {
                     </TabNavigator.Item>
                 </TabNavigator>
 
-                <Toast ref={toast=>this.toast= toast}/>
+                <Toast ref={toast => this.toast = toast}/>
             </View>
         );
     }

@@ -5,12 +5,13 @@
  */
 
 import React, {Component, PropTypes} from 'react';
-import {ListView, RefreshControl, StyleSheet, View,DeviceEventEmitter} from 'react-native';
+import {DeviceEventEmitter, ListView, RefreshControl, StyleSheet, View} from 'react-native';
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import * as Constant from "../common/Constant";
 import RepositoryCell from "../common/RepositoryCell";
 import DataRepository from '../expand/dao/DataRepository'
 import LanguageDao, {FLAG_LANGUAGE} from '../expand/dao/LanguageDao'
+import RepoDetailPage from "../page/RepoDetailPage";
 import NavigationBar from "../widget/NavigationBar";
 
 
@@ -64,7 +65,7 @@ export default class PopularPage extends Component {
 
                     {this.state.tabArrays.map((result, i, arr) => {
                         let lan = arr[i];
-                        return lan.checked ? <PopularTabPage key={i} tabLabel={lan.name} searchKey={lan.name}/> : null
+                        return lan.checked ? <PopularTabPage key={i} tabLabel={lan.name} searchKey={lan.name} {...this.props}/> : null
                     })}
                 </ScrollableTabView>;
         }
@@ -122,10 +123,10 @@ class PopularTabPage extends Component {
                     refreshing: false
                 });
                 if (result && result.update_date && !this.dataRepository.checkDate(result.update_date)) {
-                    DeviceEventEmitter.emit(Constant.EVENT_TOAST,'数据过时');
+                    DeviceEventEmitter.emit(Constant.EVENT_TOAST, '数据过时');
                     return this.dataRepository.getNetData(url);
-                }else {
-                    DeviceEventEmitter.emit(Constant.EVENT_TOAST,'命中缓存数据');
+                } else {
+                    DeviceEventEmitter.emit(Constant.EVENT_TOAST, '命中缓存数据');
                 }
             })
             .then(items => {
@@ -135,7 +136,7 @@ class PopularTabPage extends Component {
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(items),
                 });
-                DeviceEventEmitter.emit(Constant.EVENT_TOAST,'获取网络数据');
+                DeviceEventEmitter.emit(Constant.EVENT_TOAST, '获取网络数据');
             })
             .catch(error => {
                 this.setState({
@@ -151,14 +152,27 @@ class PopularTabPage extends Component {
     }
 
     _renderRow(item) {
-        return <RepositoryCell data={item}/>
+        return <RepositoryCell data={item} key={item._id} onRepoClick={(item) => this._onRepoClick(item)}/>
+    }
+
+
+    _onRepoClick(repoItem) {
+        this.props.navigator.push({
+            component: RepoDetailPage,
+            params: {
+                item: repoItem,
+                ...this.props
+            }
+        });
     }
 
     render() {
         return (
             <View>
                 <ListView
-                    ref = {(listView) =>{this.listView = listView}}
+                    ref={(listView) => {
+                        this.listView = listView
+                    }}
                     dataSource={this.state.dataSource}
                     renderRow={(item) => this._renderRow(item)}
                     refreshControl={
