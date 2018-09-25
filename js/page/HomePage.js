@@ -6,12 +6,12 @@
 
 
 import React, {Component} from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, View,DeviceEventEmitter} from 'react-native';
 import TabNavigator from "react-native-tab-navigator";
 import PopularPage from "./PopularPage";
 import MinePage from "./MinePage";
 import * as Constant from '../common/Constant'
-
+import Toast ,{DURATION} from 'react-native-easy-toast'
 import StorageLab from "../test/StorageLab";
 
 export default class HomePage extends Component {
@@ -19,9 +19,21 @@ export default class HomePage extends Component {
 
     constructor(props) {
         super(props);
+        this._registerListener.bind(this);
         this.state = {
             selectedTab: 'tb_popular'
         }
+    }
+
+    componentDidMount() {
+        this._registerListener();//这里为什么一定要通过this.来引用
+    }
+
+
+    _registerListener(){
+        this.toastListener = DeviceEventEmitter.addListener(Constant.EVENT_TOAST,(text)=>{
+            this.toast.show(text,DURATION.LENGTH_SHORT);
+        } );
     }
 
     render() {
@@ -76,6 +88,7 @@ export default class HomePage extends Component {
                     </TabNavigator.Item>
                 </TabNavigator>
 
+                <Toast ref={toast=>this.toast= toast}/>
             </View>
         );
     }

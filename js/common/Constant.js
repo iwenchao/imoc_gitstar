@@ -19,3 +19,8 @@ export const STATUS_TITLE_LABELS = "自定义标签";
 export const PAGE_PADDING_10 = 10;
 
 
+
+//事件 貌似可以优化这里 使得有层级概念
+export const EVENT_TOAST = "showToast";
+
+

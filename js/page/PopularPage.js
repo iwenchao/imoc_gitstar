@@ -5,7 +5,7 @@
  */
 
 import React, {Component, PropTypes} from 'react';
-import {ListView, RefreshControl, StyleSheet, View} from 'react-native';
+import {ListView, RefreshControl, StyleSheet, View,DeviceEventEmitter} from 'react-native';
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import * as Constant from "../common/Constant";
 import RepositoryCell from "../common/RepositoryCell";
@@ -122,7 +122,10 @@ class PopularTabPage extends Component {
                     refreshing: false
                 });
                 if (result && result.update_date && !this.dataRepository.checkDate(result.update_date)) {
+                    DeviceEventEmitter.emit(Constant.EVENT_TOAST,'数据过时');
                     return this.dataRepository.getNetData(url);
+                }else {
+                    DeviceEventEmitter.emit(Constant.EVENT_TOAST,'命中缓存数据');
                 }
             })
             .then(items => {
@@ -132,6 +135,7 @@ class PopularTabPage extends Component {
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(items),
                 });
+                DeviceEventEmitter.emit(Constant.EVENT_TOAST,'获取网络数据');
             })
             .catch(error => {
                 this.setState({

@@ -15,6 +15,10 @@ export default class RepositoryCell extends Component {
     }
 
     render() {
+        let avatar = this.props.data.owner.avatar_url
+            ?  {uri: this.props.data.owner.avatar_url}
+            : require('../../res/images/ic_code.png');
+
         return (
 
             <View style={[styles.cell_container, {margin: 10}]}>
@@ -24,8 +28,9 @@ export default class RepositoryCell extends Component {
                     <View style={{flexDirection: 'row'}}>
                         <Text style={styles.subdes}>作者:</Text>
                         <Image
+
                             style={{height: 22, width: 22, borderRadius: 2}}
-                            source={{uri: this.props.data.owner.avatar_url}}
+                            source={avatar}
                         />
                     </View>
 
