@@ -15,9 +15,9 @@ export default class RepositoryCell extends Component {
     }
 
     render() {
-        let avatar = this.props.data.owner.avatar_url
+        var avatar = this.props.data.owner.avatar_url
             ? {uri: this.props.data.owner.avatar_url}
-            : require('../../res/images/ic_code.png');
+            : require('../../res/images/ic_computer.png');
 
         return (
             <TouchableOpacity
