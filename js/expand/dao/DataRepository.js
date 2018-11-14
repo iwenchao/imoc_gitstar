@@ -5,25 +5,49 @@
  */
 import React from 'react';
 import {AsyncStorage} from 'react-native';
+import GithubTrending from 'GitHubTrending'
+
+export var FLAG_STORAGE = {flag_popular:'popular',flag_trending:'trending'}
 
 export default class DataRepository {
 
 
+    constructor(flag){
+        this.flag = flag;
+        if (flag === FLAG_STORAGE.flag_trending) {
+            this.trending = new GithubTrending();
+        }
+    }
+
     getNetData(url) {
         return new Promise(((resolve, reject) => {
-            fetch(url)
+            if (this.flag === FLAG_STORAGE.flag_trending){
+                this.trending.fetchTrending(url)
+                  .then(resut=>{
+                      if (!resut){
+                          reject(new Error('responseData is null'))
+                        return;
+                      }
+                    resolve(result);
+                      this._saveRepository(url,resut);
+                  })
+            } else {
+              fetch(url)
                 .then(response => response.json())
                 .then(result => {
-                    if (!result) {
-                        reject(new Error('response data is null'));
-                        return;
-                    }
-                    resolve(result);
-                    this._saveRepository(url, result.items);
+                  if (!result) {
+                    reject(new Error('response data is null'));
+                    return;
+                  }
+                  resolve(result);
+                  this._saveRepository(url, result.items);
                 })
                 .catch(error => {
-                    reject(error);
-                })
+                  reject(error);
+                }).done();
+            }
+
+
         }))
     }
 

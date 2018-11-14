@@ -1,5 +1,11 @@
 [
   {
+    "path": "stars:>1",
+    "name": "ALL",
+    "short_name": "ALL",
+    "checked": true
+  },
+  {
     "path": "iOS",
     "name": "iOS",
     "checked": true
@@ -12,7 +18,7 @@
   {
     "path": "MySQL",
     "name": "MySQL",
-    "checked": true
+    "checked": false
   },
   {
     "path": " AngularJS",
@@ -27,12 +33,6 @@
   {
     "path": " react",
     "name": " React",
-    "checked": true
-  },
-  {
-    "path": "stars:>1",
-    "name": "ALL",
-    "short_name": "ALL",
     "checked": true
   }
 ]
